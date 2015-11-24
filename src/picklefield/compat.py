@@ -2,12 +2,15 @@ import django
 from django.db import models
 from django.utils import six
 
-# python 3.x does not have cPickle module
 try:
-    # cpython 2.x
-    from cPickle import loads, dumps  # noqa
+    from dill import loads, dumps
 except ImportError:
-    from pickle import loads, dumps  # noqa
+    # python 3.x does not have cPickle module
+    try:
+        # cpython 2.x
+        from cPickle import loads, dumps  # noqa
+    except ImportError:
+        from pickle import loads, dumps  # noqa
 
 if django.VERSION >= (1, 8):
     _PickledObjectField = models.Field
